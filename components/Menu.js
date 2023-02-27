@@ -1,7 +1,7 @@
 import React from "react";
 import * as Tabs from "@radix-ui/react-tabs";
 
-export default function Menu() {
+export default function Menu(props) {
   const tabs = [
     {
       title: "All",
@@ -33,9 +33,19 @@ export default function Menu() {
     },
   ];
 
+  function handleSearch(e) {
+    const { value } = e.target;
+    props.onSearch(value);
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 w-full">
-      <Tabs.Root defaultValue="tab1">
+      <Tabs.Root
+        defaultValue="tab1"
+        onValueChange={(a) => {
+          props.onTabChange(a);
+        }}
+      >
         <Tabs.List
           className="flex items-center"
           aria-label="Filter by category"
@@ -43,7 +53,7 @@ export default function Menu() {
           {tabs.map((tab) => (
             <Tabs.Trigger
               key={tab.value}
-              className="px-3 py-2 text-sm sm:text-base font-medium text-gray-500 transition rounded-md focus:outline-none hover:text-gray-800 hover:bg-gray-200 focus:bg-gray-200 data-[state=active]:text-indigo-600"
+              className="px-3 py-2 text-sm sm:text-base font-medium text-gray-500 transition rounded-md focus:outline-none hover:text-gray-800 hover:bg-white focus:bg-white hover:shadow-md focus:shadow-md data-[state=active]:bg-white data-[state=active]:shadow-md"
               value={tab.value}
             >
               {tab.title}
@@ -58,6 +68,7 @@ export default function Menu() {
               type="text"
               name="name"
               id="name"
+              onChange={handleSearch}
               className="block w-full border-0 border-b border-transparent focus:border-indigo-600 focus:ring-0 sm:text-sm"
               placeholder="Search"
             />

@@ -3,7 +3,38 @@ import Hero from "@/components/Hero.js";
 import Menu from "@/components/Menu.js";
 import Image from "next/image";
 import projects from "@/content/index.js";
+import { useState, useEffect } from "react";
 export default function Home() {
+  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [currentTab, setCurrentTab] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    let filteredProjects = projects;
+
+    if (currentTab !== "all") {
+      filteredProjects = filteredProjects.filter(
+        (project) => project.category === currentTab
+      );
+    }
+
+    if (searchTerm.trim() !== "") {
+      filteredProjects = filteredProjects.filter((project) =>
+        project.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredProjects(filteredProjects);
+  }, [currentTab, searchTerm]);
+
+  function handleTabChange(tab) {
+    setCurrentTab(tab);
+  }
+
+  function handleSearch(value) {
+    setSearchTerm(value);
+  }
+
   return (
     <>
       <Head>
@@ -16,45 +47,46 @@ export default function Home() {
         <Hero />
         <section className="px-6 pt-6 lg:px-8 min-h-screen relative">
           <div>
-            <Menu />
+            <Menu onTabChange={handleTabChange} onSearch={handleSearch} />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-4 mt-8">
-              {projects.map((project, index) => (
-                <div key={index}>
-                  <Image
-                    src={`/projects/${project.image}`}
-                    alt={project.name}
-                    className="aspect-video object-cover"
-                    width={1280}
-                    height={720}
-                    placeholder="blur"
-                    blurDataURL={project.blurUrl}
-                  />
-                  <div className="py-2 flex items-center justify-between">
-                    <p className="font-semibold">{project.name}</p>
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="text-gray-600 h-5 w-5"
-                        viewBox="0 0 20 20"
+              {filteredProjects &&
+                filteredProjects.map((project, index) => (
+                  <div key={index}>
+                    <Image
+                      src={`/projects/${project.image}`}
+                      alt={project.name}
+                      className="aspect-video object-cover rounded-md"
+                      width={1280}
+                      height={720}
+                      placeholder="blur"
+                      blurDataURL={project.blurUrl}
+                    />
+                    <div className="py-2 flex items-center justify-between">
+                      <p className="font-semibold">{project.name}</p>
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500"
                       >
-                        <g
-                          fill="currentColor"
-                          fillRule="evenodd"
-                          clipRule="evenodd"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="text-gray-600 h-5 w-5"
+                          viewBox="0 0 20 20"
                         >
-                          <path d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z"></path>
-                          <path d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z"></path>
-                        </g>
-                      </svg>
-                    </a>
+                          <g
+                            fill="currentColor"
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                          >
+                            <path d="M4.25 5.5a.75.75 0 0 0-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 0 0 .75-.75v-4a.75.75 0 0 1 1.5 0v4A2.25 2.25 0 0 1 12.75 17h-8.5A2.25 2.25 0 0 1 2 14.75v-8.5A2.25 2.25 0 0 1 4.25 4h5a.75.75 0 0 1 0 1.5h-5Z"></path>
+                            <path d="M6.194 12.753a.75.75 0 0 0 1.06.053L16.5 4.44v2.81a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.553l-9.056 8.194a.75.75 0 0 0-.053 1.06Z"></path>
+                          </g>
+                        </svg>
+                      </a>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         </section>
