@@ -47,13 +47,13 @@ export default function Menu(props) {
         }}
       >
         <Tabs.List
-          className="flex items-center"
+          className="flex items-center overflow-x-auto whitespace-nowrap w-full p-1"
           aria-label="Filter by category"
         >
           {tabs.map((tab) => (
             <Tabs.Trigger
               key={tab.value}
-              className="px-3 py-2 text-sm sm:text-base font-medium text-gray-500 transition rounded-md focus:outline-none hover:text-gray-800 hover:bg-white focus:bg-white hover:shadow-md focus:shadow-md data-[state=active]:bg-white data-[state=active]:shadow-md"
+              className="px-3 py-2 text-sm sm:text-base font-medium text-gray-500 transition rounded-md focus:outline-none hover:text-gray-800 hover:bg-slate-50 focus:bg-slate-50 hover:shadow-sm focus:shadow-sm data-[state=active]:bg-white data-[state=active]:shadow-md tab-shadow"
               value={tab.value}
             >
               {tab.title}
