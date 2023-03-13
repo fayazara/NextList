@@ -3,6 +3,7 @@ import Hero from "@/components/Hero.js";
 import Menu from "@/components/Menu.js";
 import Image from "next/image";
 import projects from "@/content/index.js";
+import SubscriptionBanner from "@/components/SubscriptionBanner";
 import { useState, useEffect } from "react";
 export default function Home() {
   const [filteredProjects, setFilteredProjects] = useState(projects);
@@ -45,6 +46,7 @@ export default function Home() {
       </Head>
       <main className="min-h-screen relative bg-white dark:bg-gray-900 isolate">
         <Hero />
+        <SubscriptionBanner />
         <section className="px-6 pt-6 lg:px-8 min-h-screen relative">
           <div>
             <Menu onTabChange={handleTabChange} onSearch={handleSearch} />
